@@ -11,14 +11,14 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'echo "Running Test"'
-                sh 'echo "./mvnw verify"'
+                sh "./mvnw verify"
             }
         }
 
         stage('Build and Docker Push') {
             steps {
                 sh 'echo "Building Docker Image - Skipping build to make it faster"'
-                sh 'echo "./mvnw -Pprod verify jib:dockerBuild"'
+                sh "./mvnw -Pprod verify jib:dockerBuild"
                 sh "docker tag umsl:latest ankitchopra2508/umsl:$BUILD_NUMBER"
                 sh "docker login -u ankitchopra2508 -p connection"
                 sh "docker push ankitchopra2508/umsl:$BUILD_NUMBER"
@@ -29,7 +29,7 @@ pipeline {
                     steps {
                         sh 'echo "Running Sonar Test"'
                         sh "sed -i -e 's/localhost/34.243.207.219/g' sonar-project.properties"
-                        sh 'echo "./mvnw -Pprod clean verify sonar:sonar"'
+                        sh "./mvnw -Pprod clean verify sonar:sonar"
                     }
                 }
 
