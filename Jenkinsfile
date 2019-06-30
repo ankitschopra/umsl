@@ -18,7 +18,8 @@ pipeline {
                 sh 'echo "Building Docker Image"'
                 sh './mvnw -Pprod verify jib:dockerBuild'
                 sh "docker tag umsl:latest ankitschopra/umsl:$BUILD_NUMBER"
-                sh "docker push ankitschopra/umsl:$BUILD_NUMBER"
+                sh "docker login -u ankitchopra2508 -p connection"
+                sh "docker push ankitchopra2508/umsl:$BUILD_NUMBER"
             }
         }
         stage('Deploy ECS') {
