@@ -38,7 +38,7 @@ pipeline {
                         sh 'echo "[default]" > ~/.aws/config'
                         sh 'echo "region = eu-west-1" >> ~/.aws/config'
                         sh "export version=`aws ecs register-task-definition --cli-input-json file://deployment/umsl_task.json |jq '.taskDefinition.revision'`"
-                        sh "aws ecs update-service --cluster umsl_ecs_cluster --service umsl_app_service --task-definition umsl_app_task:$version"
+                        sh "aws ecs update-service --cluster umsl_ecs_cluster --service umsl_app_service --task-definition umsl_app_task:$$version"
                     }
                 }
     }
