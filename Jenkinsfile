@@ -10,7 +10,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'echo "Running Test"'
-                sh './mvnw verify'
+                sh 'echo "./mvnw verify"'
             }
         }
 
@@ -28,13 +28,17 @@ pipeline {
                     steps {
                         sh 'echo "Running Sonar Test"'
                         sh "sed -i -e 's/localhost/34.243.207.219/g' sonar-project.properties"
-                        sh './mvnw -Pprod clean verify sonar:sonar'
+                        sh 'echo "./mvnw -Pprod clean verify sonar:sonar"'
                     }
                 }
 
         stage('Deploy ECS') {
                     steps {
-                        sh "echo Deploy"
+                        sh "echo ECS Deploy"
+                        sh 'echo "[default]" > ~/.aws/config'
+                        sh 'echo "region = eu-west-1" >> ~/.aws/config'
+                        sh "version=`aws ecs register-task-definition --cli-input-json file://deployment/umsl_task.json |jq '.taskDefinition.revision'`"
+                        sh "aws ecs update-service --cluster umsl_ecs_cluster --service umsl_app_service --task-definition umsl_app_task:$version"
                     }
                 }
     }

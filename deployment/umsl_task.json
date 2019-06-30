@@ -1,0 +1,45 @@
+{
+
+  "containerDefinitions": [
+    {
+      "cpu": 2048,
+      "environment": [{
+        "name": "_JAVA_OPTIONS",
+        "value": "-Xmx512m -Xms256m"
+      },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "prod,swagger"
+        },
+        {
+          "name": "MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "JHIPSTER_SLEEP",
+          "value": "30"
+        }
+      ],
+      "essential": true,
+      "image": "ankitschopra/umsl:latest",
+      "memory": 1024,
+      "memoryReservation": 512,
+      "name": "umsl_app_task",
+      "portMappings": [
+        {
+          "hostPort": 8081,
+          "protocol": "tcp",
+          "containerPort": 8081
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "umsl_app_logs",
+          "awslogs-region": "eu-west-1"
+        }
+      }
+    }
+  ],
+"family": "umsl_app_task"
+}
